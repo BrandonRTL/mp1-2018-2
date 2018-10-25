@@ -25,6 +25,7 @@ void main()
 	int set; 
 	int tovar;
 	float Fprice = 0;
+	int check[6] = {0};
 	Food[0] = Chicken;
 	Food[1] = Pork;
 	Food[2] = Mutton;
@@ -32,7 +33,7 @@ void main()
 	Food[4] = Dog_Meat;
 	Food[5] = Horse_flesh;
 	printf_s("Welcome to Gleb's\nOur menu for today\n");
-	for (int i = 0; i <= 4; i++)
+	for (int i = 0; i <= 5; i++)
 	{
 		printf("%s product code ", Food[i].imya);
 		for (int j = 0; j < 4; j++)
@@ -41,38 +42,55 @@ void main()
 		}
 		printf("\n");
 	}
-	while (truth = 1)
+	if (truth = 1)
 	{
 		printf_s("Press 1 to enter the code; 2 to form a check\n");
-		scanf_s("%d", &set);
-		switch (set)
+		while (truth = 1)
 		{
-		case 1:
-		{
-			printf("Code\n");
-			int tovar = -1;
-			scanf_s("%d %d %d %d", &Code1[0], &Code1[1], &Code1[2], &Code1[3]);
-			for (int i = 0; i < 5; i++)
+
+			scanf_s("%d", &set);
+			switch (set)
 			{
-				for (int j = 0; j < 4; j++)
-					if (Code1[j] != Food[i].code[j])
-						break;
-					else
-					{
-						if (j == 3)
-							tovar = i;
-					}
+			case 1:
+			{
+				printf("Code\n");
+				int tovar = -1;
+				scanf_s("%d %d %d %d", &Code1[0], &Code1[1], &Code1[2], &Code1[3]);
+				for (int i = 0; i <= 5; i++)
+				{
+					for (int j = 0; j < 4; j++)
+						if (Code1[j] != Food[i].code[j])
+							break;
+						else
+						{
+							if (j == 3)
+								tovar = i;
+						}
+				}
+				Fprice = (Food[tovar].cena * (100.0 - Food[tovar].skidka) / 100);
+				printf("%5.2f", Fprice);
+				check[tovar] = check[tovar] + 1;
+				printf_s("Your %s for %5.2f \n", Food[tovar].imya, Fprice);
+				break;
 			}
-			Fprice = (Food[tovar].cena * (100.0 - Food[tovar].skidka)/100);
-			printf("%5.2f", Fprice);
-			printf_s("Your %s for %5.2f \n", Food[tovar].imya, Fprice);
-			break;
-		}
-		case 2:
-		{
-			printf_s("Stop scanning");
-		}
+			case 2:
+			{
+				Fprice = 0;
+				printf_s("Stop scanning\n");
+				for (int i = 0; i < 6; i++)
+				{
+					if (check[i] > 0)
+					{
+						printf("%s * %d for %5.2f\n", Food[i].imya, check[i], check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100);
+						Fprice = Fprice + check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100;
+					}
+				}
+				printf("TOTAL %5.2f", Fprice);
+				truth = 0;
+				break;
+			}
+			}
 		}
 	}
-	_getch();
+		_getch();
 }
