@@ -35,19 +35,17 @@ void main()
 	printf_s("Welcome to Gleb's\nOur menu for today\n");
 	for (int i = 0; i <= 5; i++)
 	{
-		printf("%s product code ", Food[i].imya);
+		printf("%12s product code ", Food[i].imya);
 		for (int j = 0; j < 4; j++)
 		{
 			printf("%d ", Food[i].code[j]);
 		}
 		printf("\n");
 	}
-	if (truth = 1)
-	{
-		printf_s("Press 1 to enter the code; 2 to form a check\n");
-		while (truth = 1)
+		while (truth)
 		{
 
+			printf_s("Press 1 to enter the code; 2 to form a check\n");
 			scanf_s("%d", &set);
 			switch (set)
 			{
@@ -64,13 +62,16 @@ void main()
 						else
 						{
 							if (j == 3)
+							{
 								tovar = i;
+								Fprice = (Food[tovar].cena * (100.0 - Food[tovar].skidka) / 100);
+								check[tovar] = check[tovar] + 1;
+								printf_s("Your %s for %5.2f rubles \n", Food[tovar].imya, Fprice);
+								break;
+							}
+			
 						}
 				}
-				Fprice = (Food[tovar].cena * (100.0 - Food[tovar].skidka) / 100);
-				printf("%5.2f", Fprice);
-				check[tovar] = check[tovar] + 1;
-				printf_s("Your %s for %5.2f \n", Food[tovar].imya, Fprice);
 				break;
 			}
 			case 2:
@@ -81,16 +82,15 @@ void main()
 				{
 					if (check[i] > 0)
 					{
-						printf("%s * %d for %5.2f\n", Food[i].imya, check[i], check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100);
+						printf("%15s * %d for %5.2f rubles\n", Food[i].imya, check[i], check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100);
 						Fprice = Fprice + check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100;
 					}
 				}
-				printf("TOTAL %5.2f", Fprice);
+				printf("TOTAL %5.2f rubles\n", Fprice);
 				truth = 0;
 				break;
 			}
 			}
 		}
-	}
 		_getch();
 }

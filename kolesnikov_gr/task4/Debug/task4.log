@@ -1,0 +1,5 @@
+﻿  Source.cpp
+z:\mp1-2018-2\kolesnikov_gr\task4\source.cpp(67): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+z:\mp1-2018-2\kolesnikov_gr\task4\source.cpp(86): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+z:\mp1-2018-2\kolesnikov_gr\task4\source.cpp(26): warning C4101: tovar: неиспользованная локальная переменная
+  task4.vcxproj -> Z:\mp1-2018-2\kolesnikov_gr\task4\Debug\task4.exe
