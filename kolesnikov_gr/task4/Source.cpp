@@ -64,9 +64,8 @@ void main()
 							if (j == 3)
 							{
 								tovar = i;
-								Fprice = (Food[tovar].cena * (100.0 - Food[tovar].skidka) / 100);
 								check[tovar] = check[tovar] + 1;
-								printf_s("Your %s for %5.2f rubles \n", Food[tovar].imya, Fprice);
+								printf_s("Your %s for %d rubles with %d percent discount \n", Food[tovar].imya, Food[tovar].cena, Food[tovar].skidka);
 								break;
 							}
 			
@@ -82,7 +81,7 @@ void main()
 				{
 					if (check[i] > 0)
 					{
-						printf("%15s * %d for %5.2f rubles\n", Food[i].imya, check[i], check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100);
+						printf("%15s * %d for %d rubles with %d percent discount\n              Total %s price %5.2f\n", Food[i].imya, check[i], Food[i].cena, Food[i].skidka, Food[i].imya, check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100);
 						Fprice = Fprice + check[i] * Food[i].cena*(100.0 - Food[i].skidka) / 100;
 					}
 				}
