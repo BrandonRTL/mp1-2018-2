@@ -14,32 +14,16 @@ void Switch1(char str1[], char  str2[])
 	strncpy(str1, str2, 250);
 	strncpy(str2, addstr, 250);
 }
-void bubbleSort(unsigned long sizez[],char namez[], int count)
-{
-	int i, j;
-	for (i = 0; i < count; i++)
-	{
-		for (j = count-1; j > i; j--)
-		{
-			if (sizez[j - 1] > sizez[j])
-			{
-				unsigned long x = sizez[j - 1];
-				sizez[j - 1] = sizez[j];
-				sizez[j] = x;
-			}
-		}
-	}
-}
-
-int main(void)
+int main()
 {
 	struct _finddata_t c_file;
 	intptr_t hFile;
 	char path[200];
 	int count = 0;
-	int k = 0, i = 0, j = 0;
+	int k = 0, i = 0, j = 0, l = 0;
 	unsigned long sizez[100] = { 0 };
-	unsigned long addsizez[100] = { 0 };
+	unsigned long addsizez[100000] = { 0 };
+	unsigned long x;
 	char add_str[100];
 	int add = 0;
 	printf("Enter catalog adress with doubled slashes\n");
@@ -76,19 +60,50 @@ int main(void)
 		_findclose(hFile);
 		printf("\ncount of files: %d\n", count);
 	}
-	for (i = 0; i < count; i++)
+	switch (k)
 	{
-		for (j = count - 1; j > i; j--)
+	case 1:
+		for (i = 0; i < count; i++)
 		{
-			if (sizez[j - 1] > sizez[j])
+			for (j = count - 1; j > i; j--)
 			{
-				unsigned long x = sizez[j - 1];
-				sizez[j - 1] = sizez[j];
-				Switch1(namez[j - 1], namez[j]);
-				sizez[j] = x;
+				if (sizez[j - 1] > sizez[j])
+				{
+					x = sizez[j - 1];
+					sizez[j - 1] = sizez[j];
+					Switch1(namez[j - 1], namez[j]);
+					sizez[j] = x;
+				}
 			}
 		}
+	case 2:
+		for (i = 0; i < count; i++)
+		{
+			k = i;
+			x = sizez[i];
+			for (j = i + 1; j < count; j++)
+				if (sizez[j] < x)
+				{
+					k = j;
+					x = sizez[j];
+				}
+			sizez[k] = sizez[i];
+			Switch1(namez[k], namez[i]);
+			sizez[i] = x;
+		}
+
+	case 3:
+		for (i = 0; i < count; i++) {
+			x = sizez[i];
+			for (j = i - 1; j >= 0 && sizez[j] > x; j--)
+			{
+				sizez[j + 1] = sizez[j];
+				Switch1(namez[j], namez[j + 1]);
+			}
+			sizez[j + 1] = x;
+		}
 	}
+	
 	for (i = 0; i < count; i++)
 	{
 		printf("%s\t", namez[i]);
