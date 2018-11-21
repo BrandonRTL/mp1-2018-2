@@ -46,6 +46,7 @@ int main()
 {
 	struct _finddata_t c_file;
 	intptr_t hFile;
+	int flag = 1;
 	clock_t t1, t2, t3, tt;
 	char path[200];
 	int count = 0;
@@ -64,95 +65,106 @@ int main()
 	path[a] = '\\';
 	path[a + 1] = '\\';
 	i = 0;
+	while (flag)
+	{
 	printf("Choose the sorting algorithm\n");
 	printf(" 1) - bubble sort\n 2) - select sort\n 3) - insert sort\n 4) - quick(Hoala) sort\n");
 	while ((k < 1) || (k > 4))
 		scanf("%d", &k);
-	if ((hFile = _findfirst(path, &c_file)) == -1L)
-		printf("No files fould!\n");
-	else
-	{
-		printf("Listing of files\n\n");
-		printf("FILE         DATE %24c   SIZE\n", ' ');
-		printf("----         ---- %24c   ----\n", ' ');
-		do {
-			char buffer[30];
-			if (i > -1)
-			{
-				sizez[i] = c_file.size;
-				count++;
-				strncpy(namez[addnamez[i]], c_file.name, 250);
-			}
-			ctime_s(buffer, _countof(buffer), &c_file.time_write);
-			if (count < 20);
-			printf("%-12.12s %.24s  %10u\n", c_file.name, buffer, c_file.size);
-			i++;
-		} while (_findnext(hFile, &c_file) == 0);
-		_findclose(hFile);
-		printf("\ncount of files: %d\n", count);
-	}
-	t1 = clock();
-	switch (k)
-	{
-	case 1:
-		for (i = 0; i < count; i++)
+		if ((hFile = _findfirst(path, &c_file)) == -1L)
+			printf("No files fould!\n");
+		else
 		{
-			for (j = count - 1; j > i; j--)
-			{
-				if (sizez[j - 1] > sizez[j])
+			printf("Listing of files\n\n");
+			printf("FILE         DATE %24c   SIZE\n", ' ');
+			printf("----         ---- %24c   ----\n", ' ');
+			do {
+				char buffer[30];
+				if (i > -1)
 				{
-					x = sizez[j - 1];
-					sizez[j - 1] = sizez[j];
-					Switch1(namez[j - 1], namez[j]);
-					sizez[j] = x;
+					sizez[i] = c_file.size;
+					count++;
+					strncpy(namez[addnamez[i]], c_file.name, 250);
+				}
+				ctime_s(buffer, _countof(buffer), &c_file.time_write);
+				if (count < 20);
+				printf("%-12.12s %.24s  %10u\n", c_file.name, buffer, c_file.size);
+				i++;
+			} while (_findnext(hFile, &c_file) == 0);
+			_findclose(hFile);
+			printf("\ncount of files: %d\n", count);
+		}
+		t1 = clock();
+		switch (k)
+		{
+		case 1:
+			for (i = 0; i < count; i++)
+			{
+				for (j = count - 1; j > i; j--)
+				{
+					if (sizez[j - 1] > sizez[j])
+					{
+						x = sizez[j - 1];
+						sizez[j - 1] = sizez[j];
+						Switch1(namez[j - 1], namez[j]);
+						sizez[j] = x;
+					}
 				}
 			}
-		}
-		t2 = clock();
-		break;
-	case 2:
-		for (i = 0; i < count; i++)
-		{
-			k = i;
-			x = sizez[i];
-			for (j = i + 1; j < count; j++)
-				if (sizez[j] < x)
-				{
-					k = j;
-					x = sizez[j];
-				}
-			sizez[k] = sizez[i];
-			Switch1(namez[k], namez[i]);
-			sizez[i] = x;
-		}
-		t2 = clock();
-		break;
-	case 3:
-		for (i = 0; i < count; i++)
-		{
-			x = sizez[i];
-			for (j = i - 1; j >= 0 && sizez[j] > x; j--)
+			t2 = clock();
+			break;
+		case 2:
+			for (i = 0; i < count; i++)
 			{
-				sizez[j + 1] = sizez[j];
-				Switch1(namez[j], namez[j + 1]);
+				k = i;
+				x = sizez[i];
+				for (j = i + 1; j < count; j++)
+					if (sizez[j] < x)
+					{
+						k = j;
+						x = sizez[j];
+					}
+				sizez[k] = sizez[i];
+				Switch1(namez[k], namez[i]);
+				sizez[i] = x;
 			}
-			sizez[j + 1] = x;
+			t2 = clock();
+			break;
+		case 3:
+			for (i = 0; i < count; i++)
+			{
+				x = sizez[i];
+				for (j = i - 1; j >= 0 && sizez[j] > x; j--)
+				{
+					sizez[j + 1] = sizez[j];
+					Switch1(namez[j], namez[j + 1]);
+				}
+				sizez[j + 1] = x;
+			}
+			t2 = clock();
+			break;
+		case 4:
+			quick_Sort(sizez, addnamez, 0, count - 1);
+			t2 = clock();
+			break;
 		}
-		t2 = clock();
-		break;
-	case 4:
-		quick_Sort(sizez, addnamez, 0, count - 1);
-		t2 = clock();
-		break;
-	}
-	tt = t2 - t1;
-	printf("%16cFILE    SIZE\n", ' ');
-	for (i = 0; i < count; i++)
-	{
-		printf("%20.20s\t", namez[addnamez[i]]);
-		printf("%u\n", sizez[i]);
-	}
-	printf("Time of sorting: %u clocks\n", tt);
+		tt = t2 - t1;
+		printf("%16cFILE    SIZE\n", ' ');
+		for (i = 0; i < count; i++)
+		{
+			printf("%20.20s\t", namez[addnamez[i]]);
+			printf("%u\n", sizez[i]);
+		}
+		for (i = 0; i < count; i++)
+			addnamez[i] = i;
+	// 	printf("Time of sorting: %u clocks\n", tt);
+		printf("Wanna sort files from this directory using another sort?\nPress 0 if you don't want.\n");
+		scanf("%d", &flag);
+		k = 0;
+		i = 0;
+		count = 0;
+		j = 0;
+    }
 	_getch();
 }
 
