@@ -157,7 +157,7 @@ int main()
 		}
 		for (i = 0; i < count; i++)
 			addnamez[i] = i;
-	// 	printf("Time of sorting: %u clocks\n", tt);
+		printf("Time of sorting: %u clocks\n", tt);
 		printf("Wanna sort files from this directory using another sort?\nPress 0 if you don't want.\n");
 		scanf("%d", &flag);
 		k = 0;
