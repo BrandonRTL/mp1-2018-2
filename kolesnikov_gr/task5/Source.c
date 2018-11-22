@@ -6,8 +6,6 @@
 #include <time.h>  
 #include <string.h>
 #include <time.h>
-
-char namez[1000][250];
 void Switch1(char str1[], char  str2[])
 {
 	char addstr[250] = { 0 };
@@ -41,7 +39,7 @@ void quick_Sort(unsigned long a[], int b[], int ll, int count)
 	if (j > ll) quick_Sort(a, b, ll, j);
 	if (count > i) quick_Sort(a, b, i, count);
 }
-
+char namez[100000][250];
 int main()
 {
 	struct _finddata_t c_file;
@@ -52,10 +50,10 @@ int main()
 	int count = 0;
 	t3 = clock();
 	int k = 0, i = 0, j = 0, l = 0;
-	unsigned long sizez[100] = { 0 };
+	unsigned long sizez[100000] = { 0 };
 	unsigned long x;
-	int addnamez[250];
-	for (i = 0; i < 250; i++)
+	int addnamez[100000];
+	for (i = 0; i < 100000; i++)
 		addnamez[i] = i;
 	printf("Enter catalog adress with doubled slashes\n");
 	gets(path);
@@ -69,7 +67,7 @@ int main()
 	{
 	printf("Choose the sorting algorithm\n");
 	printf(" 1) - bubble sort\n 2) - select sort\n 3) - insert sort\n 4) - quick(Hoala) sort\n");
-	while ((k < 1) || (k > 4))
+	while ((k < 1) || (k > 5))
 		scanf("%d", &k);
 		if ((hFile = _findfirst(path, &c_file)) == -1L)
 			printf("No files fould!\n");
@@ -167,4 +165,3 @@ int main()
     }
 	_getch();
 }
-
