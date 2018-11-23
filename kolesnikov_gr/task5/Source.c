@@ -49,6 +49,7 @@ int main()
 	char path[200];
 	int count = 0;
 	t3 = clock();
+	int mode = -1;
 	int k = 0, i = 0, j = 0, l = 0;
 	unsigned long sizez[100000] = { 0 };
 	unsigned long x;
@@ -63,12 +64,15 @@ int main()
 	path[a] = '\\';
 	path[a + 1] = '\\';
 	i = 0;
+	printf("Press 1 for ascending sort, press 0 for descending sort");
+	while ((mode < 0) || (mode > 1))
+		scanf("%d", &mode);
 	while (flag)
 	{
-	printf("Choose the sorting algorithm\n");
-	printf(" 1) - bubble sort\n 2) - select sort\n 3) - insert sort\n 4) - quick(Hoala) sort\n");
-	while ((k < 1) || (k > 5))
-		scanf("%d", &k);
+		printf("Choose the sorting algorithm\n");
+		printf(" 1) - bubble sort\n 2) - select sort\n 3) - insert sort\n 4) - quick(Hoala) sort\n");
+		while ((k < 1) || (k > 5))
+			scanf("%d", &k);
 		if ((hFile = _findfirst(path, &c_file)) == -1L)
 			printf("No files fould!\n");
 		else
@@ -148,10 +152,21 @@ int main()
 		}
 		tt = t2 - t1;
 		printf("%16cFILE    SIZE\n", ' ');
-		for (i = 0; i < count; i++)
+		if (mode == 1)
 		{
-			printf("%20.20s\t", namez[addnamez[i]]);
-			printf("%u\n", sizez[i]);
+			for (i = 0; i < count; i++)
+			{
+				printf("%20.20s\t", namez[addnamez[i]]);
+				printf("%u\n", sizez[i]);
+			}
+		}
+		else
+		{
+			for (i = count - 1; i >= 0; i--)
+			{
+				printf("%20.20s\t", namez[addnamez[i]]);
+				printf("%u\n", sizez[i]);
+			}
 		}
 		for (i = 0; i < count; i++)
 			addnamez[i] = i;
@@ -162,6 +177,6 @@ int main()
 		i = 0;
 		count = 0;
 		j = 0;
-    }
+	}
 	_getch();
 }
