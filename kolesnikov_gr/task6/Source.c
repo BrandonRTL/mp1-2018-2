@@ -45,7 +45,7 @@ long double Arctangens(double Tochnost, double x, int n)
 	do
 	{
 		printf("|x|<=1!!!!");
-		scanf_s("%f", &x);
+		scanf_s("%lf", &x);
 	} while (fabs(x) > 1);
 	long double ImArcTan = x;
 	long double ImAdding = x;
@@ -97,22 +97,56 @@ int main()
 {
 	double x, y, z, t;
 	int n = 100;
+	x = 1.52;
+	long double ref;
+	int m;
+	int Nmax;
+	int* pm;
 	int j = 1;
 	int flag = 1;
-	double Tochnost = 1;
+	int mode;
+	long double Tochnost = 1;
 	void(*p)();
 	long double(*operation)(long double, long double, int);
+	printf("Choose game mode!\n1 - Single function calculation\n2 - Serial experiment\n");
+	scanf_s("%d", &mode);
+	if (mode == 2)
+	{
+		printf("Choose the number of experiments\n");
+		scanf_s("%d", &Nmax);
+	}
+	if (mode == 1)
+	{
+		printf("Choose the number of elements in a row!\n");
+		scanf_s("%d", &n);
+	}
+	printf("Choose x!\n");
+	scanf_s("%lf", &x);
 	printf("Choose the function!\n");
 	printf("1 - sin\n2 - cos\n3 - exp\n4 - arctan");
 	scanf_s("%d", &j);
 	operation = Sinus;
+	ref = sin(x);
 	if (j == 2)
+	{
 		operation = Cosinus;
+		ref = cos(x);
+	}
 	if (j == 3)
+	{
 		operation = Exponenta;
+		ref = exp(x);
+	}
 	if (j == 4)
+	{
 		operation = Arctangens;
-	y = operation(0.00001, 1.52, 100);
-	printf("%f", y);
+		ref = atan(x);
+	}
+	printf("Choose precision!\n");
+	scanf_s("%lf", &Tochnost);
+	y = operation(Tochnost, x, n);
+	printf("calculated value: %f\n", y);
+	printf("reference value: %lf\n", ref);
+	printf("difference: %lf\n", fabs(ref-y));
 	_getch();
 }
