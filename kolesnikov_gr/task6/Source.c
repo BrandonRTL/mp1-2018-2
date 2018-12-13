@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-long double Exponenta(double Tochnost, double x, int n, int *Imcount) // MEHANIZM FUNKCII NA SVYAZI
+long double Exponenta(double precision, double x, int n, int *Imcount) // MEHANIZM FUNKCII NA SVYAZI
 {
 	long double ImExp = 1;
 	long double ImAdding = 1;
@@ -16,13 +16,13 @@ long double Exponenta(double Tochnost, double x, int n, int *Imcount) // MEHANIZ
 		ImAdding = (ImAdding * x) / (i-1);
 		ImExp = ImExp + ImAdding;
 		count++;
-		if (fabs(y - ImExp) < Tochnost)
+		if (fabs(y - ImExp) < precision)
 			i = n + 1;
 	}
 	*Imcount = count+1;
 	return ImExp;
 }
-long double Arctangens(double Tochnost, double x, int n, int *Imcount)
+long double Arctang(double precision, double x, int n, int *Imcount)
 {
 	long double ImArcTan = x;
 	long double ImAdding = x;
@@ -35,13 +35,13 @@ long double Arctangens(double Tochnost, double x, int n, int *Imcount)
 		ImArcTan = ImArcTan + ImAdding;
 		count++;
 		diff = fabs(tan(x) - ImArcTan);
-		if (diff < Tochnost)
+		if (diff < precision)
 			i = n + 1;
 	}
 	*Imcount = count+1;
 	return(ImArcTan);
 }
-long double Cosinus (double Tochnost, double x, int n, int *Imcount)
+long double Cosinus (double precision, double x, int n, int *Imcount)
 {
 	int i;
 	int count = 0;
@@ -52,13 +52,13 @@ long double Cosinus (double Tochnost, double x, int n, int *Imcount)
 		ImAdding = ImAdding*(-1)*((x * x) / ((2 * i - 2) * (2 * i - 3)));
 		ImCos = ImCos + ImAdding;
 		count++;
-		if (fabs(cos(x) - ImCos) < Tochnost)
+		if (fabs(cos(x) - ImCos) < precision)
 			i= n+1;
 	}
 	*Imcount = count+1;
 	return ImCos;
 }
-long double Sinus(double Tochnost, double x, int n, int *Imcount) // 4 FUNKCII
+long double Sinus(double precision, double x, int n, int *Imcount) // 4 FUNKCII
 {
 	int i;
 	long double ImSin = x;
@@ -69,7 +69,7 @@ long double Sinus(double Tochnost, double x, int n, int *Imcount) // 4 FUNKCII
 		ImAdding = ImAdding*(-1)*((x * x) / ((2 * i - 2) * (2 * i - 1)));
 		ImSin = ImSin + ImAdding;
 		count++;
-		if (fabs(sin(x) - ImSin) < Tochnost)
+		if (fabs(sin(x) - ImSin) < precision)
 			i = n + 1;
 	}
 	*Imcount = count+1;
@@ -77,39 +77,34 @@ long double Sinus(double Tochnost, double x, int n, int *Imcount) // 4 FUNKCII
 }
 int main()
 {
-	double x, y, z, t;
+	double x, y;
 	int n = 100;
 	long double ref;
-	int m;
 	int Nmax;
 	int* pm;
 	int i;
 	int j = 1;
-	int flag = 1;
 	int mode;
 	int count;
-	long double Tochnost = 1;
+	long double precision = 1;
 	void(*p)();  // YKAZATEL NA FUNKCIYU ZDEC'
-	long double(*operation)(long double, long double, int, int*);  
+	long double(*operation[5])(long double, long double, int, int*);  
+	operation[1] = Sinus;
+	operation[2] = Cosinus;
+	operation[3] = Exponenta;
+	operation[4] = Arctang;
+	long double(*pref[5])(double);
+	pref[1] = sin;
+	pref[2] = cos;
+	pref[3] = exp;
+	pref[4] = atan;
 	printf("Choose game mode!\n1 - Single function calculation\n2 - Serial experiment\n");
 	scanf_s("%d", &mode);
 	printf("Choose the function!\n");
-	printf("1 - sin\n2 - cos\n3 - exp\n4 - arctan");
+	printf("1 - sin\n2 - cos\n3 - exp\n4 - arctan\n");
 	scanf_s("%d", &j);
 	printf("Choose x!\n");
 	scanf_s("%lf", &x);
-	operation = Sinus;
-	ref = sin(x);
-	if (j == 2)
-	{
-		operation = Cosinus;
-		ref = cos(x);
-	}
-	if (j == 3)
-	{
-		operation = Exponenta;
-		ref = exp(x);
-	}
 	if (j == 4)
 	{
 		while (fabs(x) > 1)
@@ -117,16 +112,15 @@ int main()
 			printf("|x|<=1!!!!");
 			scanf_s("%lf", &x);
 		}
-		operation = Arctangens;
-		ref = atan(x);
 	}
+	ref = pref[j](x);
 	if (mode == 1)
 	{
 		printf("Choose the number of elements in a row!\n");
 		scanf_s("%d", &n);
 		printf("Choose precision!\n");
-		scanf_s("%lf", &Tochnost);
-		y = operation(Tochnost, x, n, &count);
+		scanf_s("%lf", &precision);
+		y = operation[j](precision, x, n, &count);
 		printf("calculated value: %f\n", y);
 		printf("reference value: %lf\n", ref);
 		printf("difference: %lf\n", fabs(ref - y));
@@ -139,7 +133,7 @@ int main()
 		printf("N       Ref Value         Calc Value          Diff\n");
 		for (i = 1; i <= Nmax; i++)
 		{
-			y = operation(0, x, i, &count);
+			y = operation[j](0, x, i, &count);
 			printf("%.2d %16.9lf    %14.9lf    %12.9lf\n", i, ref, y, fabs(ref - y));
 		}
 	}
